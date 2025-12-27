@@ -11,6 +11,11 @@
   min-height: 100vh;
 }
 
+/* When sidebar is collapsed the main content should take more space */
+.app-container.sidebar-collapsed .main-content {
+  margin-right: 72px;
+}
+
 @media (max-width: 768px) {
   .main-content {
     margin-right: 0;

@@ -1,0 +1,35 @@
+
+.add-course-page { padding: 28px 16px; direction: rtl; }
+.add-course-page .container { max-width: 860px; margin: 0 auto; background: #ffffff; padding: 22px; border-radius: 12px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+.add-course-page h2 { margin: 0 0 8px; font-size: 20px; color: #0f172a; text-align: right; }
+.add-course-page p.lead { margin: 0 0 18px; color: #475569; font-size: 13px; text-align: right; }
+
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 720px) {
+	.form-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.field { display: flex; flex-direction: column; }
+.field label { font-weight: 600; font-size: 13px; margin-bottom: 6px; color: #0f172a; text-align: right; }
+.field input, .field textarea, .field select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e6eef8; background: #ffffff; font-size: 14px; color: #0f172a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); transition: all 0.18s ease; }
+.field textarea { min-height: 120px; resize: vertical; }
+
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #000000; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transform: translateY(-1px); }
+
+/* Custom select caret and padding */
+.field select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2010%206'%3E%3Cpath%20d='M1%201L5%205L9%201'%20stroke='%236b7280'%20stroke-width='1.2'%20fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px 8px; padding-right: 42px; }
+
+.checkbox-row { display: flex; gap: 10px; align-items: center; justify-content: flex-start; direction: rtl; }
+.checkbox-row label { display: flex; align-items: center; gap: 8px; font-weight: 500; color: #374151; }
+
+.actions { margin-top: 18px; display:flex; gap:12px; justify-content: flex-start; direction: rtl; }
+.btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; }
+.btn-primary { background: #000000; color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+.btn-primary:hover { background: #111111; transform: translateY(-2px); }
+.btn-secondary { background: transparent; color: #0f172a; border: 1px solid #e6eef8; }
+.btn-secondary:hover { background: #f8fafc; }
+
+.hint { font-size: 12px; color: #6b7280; margin-top: 6px; }
+
+.full-row { grid-column: 1 / -1; }
+

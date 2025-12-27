@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: column;
   z-index: 100;
+  transition: width 0.22s ease;
 }
 
 .sidebar-header {
@@ -40,6 +41,24 @@
   font-weight: 700;
   color: #000000;
 }
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  cursor: pointer;
+  color: #475569;
+  border-radius: 8px;
+}
+
+.toggle-btn:hover { background: #f3f4f6; }
+
+.toggle-icon { transition: transform 0.18s ease; transform: rotate(180deg); }
 
 .sidebar-nav {
   flex: 1;
@@ -99,6 +118,27 @@
 .nav-label {
   font-size: 14px;
 }
+
+/* Collapsed state: show icons only */
+.sidebar.collapsed {
+  width: 72px;
+}
+
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .logout-btn span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link { justify-content: center; padding: 12px 8px; }
+
+.sidebar.collapsed .nav-item.active .nav-link::before { display: none; }
+
+.sidebar.collapsed .toggle-icon { transform: rotate(0deg); }
+
+.sidebar.collapsed .logo { justify-content: center; }
+
+.sidebar.collapsed .logo-icon { width: 40px; height: 40px; }
 
 .sidebar-footer {
   padding: 16px;

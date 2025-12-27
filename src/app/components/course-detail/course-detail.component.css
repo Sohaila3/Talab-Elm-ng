@@ -1,0 +1,25 @@
+.course-detail { padding: 28px 16px; }
+.course-detail .card { max-width: 920px; margin: 0 auto; background: linear-gradient(180deg,#ffffff,#fbfdff); padding: 22px; border-radius: 14px; box-shadow: 0 18px 50px rgba(2,6,23,0.08); }
+.card-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 10px; }
+.course-detail .back { background: transparent; border: none; color: #374151; cursor: pointer; font-weight: 600; }
+.course-detail .actions { display:flex; gap:8px; }
+.btn { padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+.btn.edit { background: #f3f4f6; color: #0f172a; }
+.btn.danger { background: #ef4444; color: white; }
+
+.status-top { text-align: right; margin-bottom: 10px; }
+.detail-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top: 18px; }
+.edit-under { background: transparent; border: 1px solid #e2e8f0; color: #0f172a; padding: 8px 12px; border-radius: 8px; font-weight:700; cursor:pointer; }
+.edit-under:hover { background:#f8fafc; }
+.icon-btn { background: transparent; border: none; color: #000000; width: 40px; height: 40px; display:flex; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; }
+.icon-btn:hover { background: rgba(0,0,0,0.04); }
+
+.detail-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 12px; }
+.detail-header .left h2 { margin: 0; font-size: 22px; color: #0f172a; }
+.detail-header .meta { color: #6b7280; margin: 6px 0 0; }
+.badge { padding: 6px 10px; border-radius: 999px; background: #f1f5f9; color: #334155; font-weight: 700; }
+.badge.active { background: #dcfce7; color: #15803d; }
+
+.course-detail .desc { color: #374151; line-height: 1.8; margin-bottom: 14px; }
+.course-detail .info { display:flex; gap:18px; flex-wrap:wrap; color:#475569; }
+.info-item { background:#ffffff; padding:8px 12px; border-radius:8px; box-shadow: 0 6px 20px rgba(2,6,23,0.04); font-weight:600; }

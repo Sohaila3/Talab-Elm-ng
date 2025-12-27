@@ -1,7 +1,7 @@
-<div class="app-container">
-  <app-sidebar></app-sidebar>
+<div class="app-container" [class.sidebar-collapsed]="sidebarCollapsed">
+  <app-sidebar (collapsedChange)="onSidebarToggle($event)"></app-sidebar>
   <main class="main-content">
     <app-header></app-header>
-    <app-courses></app-courses>
+    <router-outlet></router-outlet>
   </main>
 </div>

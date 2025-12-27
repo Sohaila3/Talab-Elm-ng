@@ -1,10 +1,10 @@
 <section class="courses-section">
   <div class="section-header">
     <div class="header-content">
-      <h1 class="section-title">الدورات المتاحة</h1>
+      <h1 class="section-title">الشهادات</h1>
       <p class="section-subtitle">إدارة البرامج الدراسية والشهادات المهنية ومتابعة أدائها بشكل فعال</p>
     </div>
-    <button class="add-course-btn">
+    <button class="add-course-btn" (click)="openAddCourse()">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="5" x2="12" y2="19"></line>
         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -47,13 +47,14 @@
 
   <div class="courses-grid">
     @for (course of filteredCourses; track course.id) {
-      <div class="course-card">
+      <div class="course-card" (click)="openCourse(course.id)">
         <div class="card-header">
-          <div class="card-actions">
-            <button class="action-btn select-btn">
+          <div class="card-left-icon">
+            <button class="pencil-btn" (click)="$event.stopPropagation(); openEdit(course.id)">
+              <!-- pencil icon (kept as requested) -->
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 11 12 14 22 4"></polyline>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"></path>
+                <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
               </svg>
             </button>
           </div>
@@ -100,14 +101,14 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
             </svg>
-            <span>{{ course.lessonsCount }} دورات تدريبية</span>
+            <span>{{ course.lessonsCount }} مواد</span>
           </div>
         </div>
       </div>
     }
 
     <!-- Add New Course Card -->
-    <div class="course-card add-card">
+    <div class="course-card add-card" (click)="openAddCourse()">
       <div class="add-card-content">
         <div class="add-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
