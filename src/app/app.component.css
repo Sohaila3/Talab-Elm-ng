@@ -1,0 +1,18 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  direction: rtl;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f8f9fa;
+  margin-right: 260px;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-right: 0;
+  }
+}

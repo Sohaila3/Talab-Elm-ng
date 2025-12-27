@@ -1,0 +1,156 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px; /* further reduced navbar height */
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  gap: 10px;
+  min-height: 48px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar img {
+  width: 32px; /* smaller avatar */
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+
+.notification-btn {
+  width: 32px; /* slightly smaller */
+  height: 32px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.16s ease;
+}
+
+.notification-btn:hover {
+  background-color: #e5e7eb;
+  color: #3b82f6;
+}
+
+/* vertical divider between notification and admin */
+.divider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background-color: #e5e7eb;
+  color: transparent; /* hide the pipe character visually if present */
+  border-radius: 1px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f4f6;
+  padding: 6px 10px; /* reduced height of search */
+  border-radius: 10px;
+  width: 45%;
+  max-width: 560px;
+  min-width: 200px;
+}
+
+.search-box svg { color: #9ca3af; }
+
+.search-box input {
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+  color: #1f2937;
+  padding: 0 0;
+  line-height: 1;
+}
+
+/* small user-menu chevron after admin */
+.user-menu {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.user-menu svg { stroke-width: 2; }
+
+.search-box input::placeholder { color: #9ca3af; }
+
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #e0f2fe; /* لبني فاتح */
+  color: #075985;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  border: 1px solid #bae6fd;
+}
+
+.dropdown-btn:hover { background-color: #dbeffd; }
+
+@media (max-width: 1024px) {
+  .search-box { width: 70%; min-width: 200px; }
+}
+
+@media (max-width: 768px) {
+  .header { flex-direction: column; gap: 10px; padding: 10px 12px; align-items: stretch; }
+  .header-center { order: 2; }
+  .header-left, .header-right { order: 1; display: flex; justify-content: space-between; }
+  .search-box { width: 100%; min-width: 0; }
+}
