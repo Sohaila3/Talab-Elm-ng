@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SidebarStateService } from '../../services/sidebar-state.service';
 import { CommonModule } from '@angular/common';
 
 interface MenuItem {
@@ -17,20 +19,33 @@ interface MenuItem {
 })
 export class SidebarComponent {
   menuItems: MenuItem[] = [
-    { icon: 'home', label: 'الرئيسية', active: false },
-    { icon: 'book', label: 'الشهادات', active: true },
-    { icon: 'video', label: 'الحصص المباشرة', active: false },
-    { icon: 'users', label: 'إدارة الحسابات', active: false },
-    { icon: 'tag', label: 'الأسعار', active: false },
-    { icon: 'credit-card', label: 'الاشتراكات', active: false },
-    { icon: 'file-text', label: 'المدفوعات', active: false },
-    { icon: 'headphones', label: 'خدمة العملاء', active: false }
+    { label: 'الرئيسية', icon: 'home', active: false },
+    { label: 'الشهادات', icon: 'award', active: true },
+    { label: 'الحصص المباشرة', icon: 'video', active: false },
+    { label: 'إدارة الحسابات', icon: 'users', active: false },
+    { label: 'الأسعار', icon: 'tag', active: false },
+    { label: 'الاشتراكات', icon: 'shield', active: false },
+    { label: 'المدفوعات', icon: 'credit-card', active: false },
+    { label: 'خدمة العملاء', icon: 'headphones', active: false }
   ];
   collapsed = false;
+  isOpen = false;
+  private _sub: Subscription | null = null;
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
     this.collapsedChange.emit(this.collapsed);
   }
   @Output() collapsedChange = new EventEmitter<boolean>();
+
+  ngOnInit(): void {
+    this._sub = this.sidebarState.open$.subscribe(v => this.isOpen = v);
+  }
+
+  ngOnDestroy(): void {
+    this._sub?.unsubscribe();
+    this._sub = null;
+  }
+
+  constructor(private sidebarState: SidebarStateService) { }
 }

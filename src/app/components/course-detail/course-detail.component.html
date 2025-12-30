@@ -1,48 +1,293 @@
-<section class="course-detail">
-  <div class="card">
-    <div class="card-top">
-      <button class="back" (click)="goBack()">← رجوع</button>
-    </div>
+<div class="min-h-[900px] w-full bg-[#F5F7FA] text-[#1E293B] font-['Cairo'] flex-1 flex flex-col items-center"
+  dir="rtl">
 
-    <ng-container *ngIf="course; else missing">
-      <div class="status-top">
-        <div class="badge" [class.active]="course.isActive">{{ course.isActive ? 'مفعلة' : 'غير مفعلة' }}</div>
+  <main class="w-full h-full p-4 md:p-10 overflow-y-auto">
+    <div class="max-w-[1200px] mx-auto w-full">
+
+      <!-- Page Header -->
+      <div class="flex flex-col items-center mb-8 text-center">
+        <h1 class="text-[40px] font-black text-[#0F172A] mb-2 tracking-tight">
+          مواد {{ course?.title || '' }}
+        </h1>
+        <p class="text-[#64748B] text-lg font-medium" *ngIf="isSocpa">
+          إدارة المواد الدراسية، الأكواد، والمدربين الخاصين بشهادة الزمالة
+        </p>
+        <p class="text-[#64748B] text-lg font-medium" *ngIf="!isSocpa">
+          إدارة المواد الدراسية الخاصة بهذه الشهادة
+        </p>
       </div>
 
-      <div class="detail-header">
-        <div class="left">
-          <h2>{{ course.title }}</h2>
-          <p class="meta">{{ course.code }} • {{ course.titleEn }}</p>
-        </div>
-      </div>
+      <!-- Content Card -->
+      <div
+        class="bg-white rounded-2xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.02)] border border-[#E2E8F0] overflow-hidden flex flex-col min-h-[600px]">
 
-      <p class="desc">{{ course.description }}</p>
-      <div class="info">
-        <div class="info-item">المواد: <strong>{{ course.lessonsCount }}</strong></div>
-        <div class="info-item">فيديو: <strong>{{ course.hasVideo ? 'نعم' : 'لا' }}</strong></div>
-        <div class="info-item">كتاب: <strong>{{ course.hasBook ? 'نعم' : 'لا' }}</strong></div>
-        <div class="info-item">النوع: <strong>{{ course.type }}</strong></div>
-      </div>
+        <!-- Toolbar -->
+        <div
+          class="p-6 border-b border-[#E2E8F0] flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white sticky top-0 z-10">
+          <div class="flex items-center gap-3 w-full lg:w-auto">
+            <div class="relative w-full lg:w-96">
+              <input type="text" placeholder="بحث في المواد..." [ngModel]="searchTerm"
+                (ngModelChange)="onSearch($event)"
+                class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-3 pr-11 pl-4 text-sm focus:outline-none focus:border-[#1877F2] focus:ring-4 focus:ring-[#1877F2]/10 transition-all placeholder:text-[#94A3B8] font-bold text-[#0F172A]" />
+              <!-- Search Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8] w-5 h-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
 
-      <div class="detail-actions">
-        <div class="left-actions">
-          <button class="edit-under" (click)="$event.stopPropagation(); editCourse()">تعديل</button>
-        </div>
-        <div class="right-actions">
-          <button class="icon-btn" title="حذف" (click)="deleteCourse()">
-            <!-- trash icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-              <path d="M10 11v6"></path>
-              <path d="M14 11v6"></path>
-            </svg>
+          <button (click)="toggleAddForm()"
+            [class]="showAddForm 
+              ? 'add-course-btn px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg bg-[#EFF6FF] text-[#1877F2] shadow-blue-500/5 hover:bg-[#DBEAFE]' 
+              : 'add-course-btn px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg bg-gradient-to-r from-[#1877F2] to-[#1565D8] text-white hover:shadow-blue-500/30 hover:-translate-y-0.5'">
+            <ng-container *ngIf="showAddForm; else addIcon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>إلغاء الإضافة</span>
+            </ng-container>
+            <ng-template #addIcon>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>إضافة مادة جديدة</span>
+            </ng-template>
           </button>
         </div>
+
+        <!-- Inline Add Form -->
+        <div *ngIf="showAddForm" class="bg-white border-b border-[#E2E8F0] animate-in slide-in-from-top-2 duration-200">
+          <div class="p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#1877F2]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold text-[#1E293B]">بيانات المادة الجديدة</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-[#475569] block">اسم المادة <span
+                    class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="newMaterialName" placeholder="أدخل اسم المادة"
+                  class="w-full h-11 px-4 rounded-lg border border-[#E2E8F0] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" />
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-[#475569] block">النوع</label>
+                <div class="relative">
+                  <select [(ngModel)]="newMaterialType"
+                    class="w-full h-11 px-4 rounded-lg border border-[#E2E8F0] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none bg-white">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                  </select>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] w-5 h-5 pointer-events-none"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-[#475569] block">الكود <span class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="newMaterialCode" placeholder="CODE-000"
+                  class="w-full h-11 px-4 rounded-lg border border-[#E2E8F0] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-mono"
+                  dir="ltr" />
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-[#475569] block">اللون</label>
+                <div class="flex items-center gap-3 relative">
+                  <div class="relative">
+                    <div
+                      class="w-6 h-6 rounded-full border border-[#E2E8F0] shadow-sm cursor-pointer hover:scale-110 transition-transform"
+                      [style.backgroundColor]="newMaterialColor"></div>
+                    <input type="color" [(ngModel)]="newMaterialColor"
+                      class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" title="اختر لون المادة" />
+                  </div>
+                  <input type="text" [(ngModel)]="newMaterialColor" placeholder="#1877F2"
+                    class="flex-1 h-11 px-4 rounded-lg border border-[#E2E8F0] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-mono"
+                    dir="ltr" />
+                </div>
+              </div>
+
+              <div class="space-y-2 lg:col-span-2">
+                <label class="text-sm font-bold text-[#475569] block">المسؤول</label>
+                <div class="relative">
+                  <select [(ngModel)]="newMaterialAssignedTo"
+                    class="w-full h-11 px-4 rounded-lg border border-[#E2E8F0] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none bg-white">
+                    <option value="Instructor1@taleb.com">Instructor1&#64;taleb.com</option>
+                    <option value="Tax_Expert@taleb.com">Tax_Expert&#64;taleb.com</option>
+                  </select>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8] w-5 h-5 pointer-events-none"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-[#E2E8F0]">
+              <button (click)="cancelAdd()"
+                class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E6EEF8] bg-white hover:bg-[#F8FAFC] transition-all">
+                إلغاء
+              </button>
+              <button (click)="saveMaterial()"
+                class="px-8 py-2.5 rounded-xl font-bold text-sm add-course-btn shadow-lg shadow-blue-500/20 transition-all">
+                حفظ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto flex-1 bg-white">
+          <table class="w-full text-right">
+            <thead class="bg-[#F8FAFC] border-b border-[#E2E8F0] sticky top-0 z-0">
+              <tr class="text-[#64748B] text-xs uppercase tracking-wider font-['Cairo']">
+                <th class="py-4 px-6 font-bold w-[25%] whitespace-nowrap">اسم المادة</th>
+                <th class="py-4 px-6 font-bold w-[12%] whitespace-nowrap">النوع</th>
+                <th class="py-4 px-6 font-bold w-[15%] whitespace-nowrap">الكود</th>
+                <th class="py-4 px-6 font-bold w-[15%] whitespace-nowrap">اللون</th>
+                <th class="py-4 px-6 font-bold w-[20%] whitespace-nowrap">المسؤول</th>
+                <th class="py-4 px-6 font-bold w-[13%] whitespace-nowrap">الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#F1F5F9]">
+              <!-- Empty State -->
+              <tr *ngIf="filteredMaterials.length === 0 && !showAddForm">
+                <td colspan="6" class="h-[400px] text-center align-middle">
+                  <div class="flex flex-col items-center justify-center gap-6 h-full w-full">
+                    <div class="w-20 h-20 rounded-full bg-[#F8FAFC] flex items-center justify-center text-[#CBD5E1]">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-[#64748B] font-bold text-xl">لم يضاف مادة بعد</p>
+                    <button (click)="toggleAddForm()"
+                      class="add-course-btn px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg bg-gradient-to-r from-[#1877F2] to-[#1565D8] text-white hover:shadow-blue-500/30 hover:-translate-y-0.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                      <span>إضافة مادة جديدة</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngFor="let material of filteredMaterials"
+                class="group border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors last:border-none">
+                <td class="py-4 px-6">
+                  <span class="font-['Cairo'] font-bold text-[#1877F2] text-sm cursor-pointer hover:underline"
+                    (click)="openMaterialStructure(material)">
+                    {{ material.name }}
+                  </span>
+                </td>
+                <td class="py-4 px-6">
+                  <span
+                    [class]="'inline-flex items-center justify-center text-xs font-medium px-2 py-0.5 rounded-md ' + (material.type === 'Public' ? 'text-[#10B981]' : 'text-[#64748B]')">
+                    {{ material.type }}
+                  </span>
+                </td>
+                <td class="py-4 px-6">
+                  <span class="font-mono text-[13px] font-semibold text-[#64748B]">
+                    {{ material.code }}
+                  </span>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="flex items-center gap-2">
+                    <div class="w-3.5 h-3.5 rounded-full shadow-sm ring-1 ring-black/5"
+                      [style.backgroundColor]="material.color"></div>
+                    <span class="text-xs font-medium text-[#94A3B8] uppercase tracking-wide font-mono">{{ material.color
+                      }}</span>
+                  </div>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="flex items-center gap-2 text-sm text-[#64748B] font-['Cairo']">
+                    <div
+                      class="w-7 h-7 rounded-full bg-[#F1F5F9] flex items-center justify-center text-[10px] font-bold text-[#64748B] border border-[#E2E8F0]">
+                      {{ material.assignedTo.charAt(0) }}
+                    </div>
+                    <span class="truncate max-w-[180px] font-bold text-xs">{{ material.assignedTo }}</span>
+                  </div>
+                </td>
+                <td class="py-4 px-6">
+                  <div class="flex items-center gap-2">
+                    <button (click)="deleteMaterial(material.id)"
+                      class="w-8 h-8 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#EF4444] hover:bg-[#FEF2F2] transition-all border border-transparent hover:border-[#FECACA] group/btn">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-4 h-4 group-hover/btn:scale-110 transition-transform" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="w-8 h-8 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#1877F2] hover:bg-[#EFF6FF] hover:shadow-md transition-all border border-transparent hover:border-[#DBEAFE] group/btn">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div
+          class="p-4 border-t border-[#E2E8F0] flex flex-col sm:flex-row items-center justify-between gap-4 bg-white">
+          <div class="text-sm text-[#64748B] font-medium order-2 sm:order-1">
+            عرض <span class="font-bold text-[#0F172A]">{{ filteredMaterials.length }}</span> من أصل <span
+              class="font-bold text-[#0F172A]">{{ materials.length }}</span> مواد
+          </div>
+          <div class="flex items-center gap-1 order-1 sm:order-2">
+            <button
+              class="w-10 h-10 rounded-xl border border-[#E2E8F0] flex items-center justify-center text-[#94A3B8] hover:bg-[#F8FAFC] disabled:opacity-50 transition-colors"
+              disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+            <button
+              class="w-10 h-10 rounded-xl bg-[#1877F2] text-[#0F172A] font-bold text-sm flex items-center justify-center shadow-lg shadow-blue-500/20">
+              1
+            </button>
+            <button
+              class="w-10 h-10 rounded-xl border border-[#E2E8F0] flex items-center justify-center text-[#94A3B8] hover:bg-[#F8FAFC] disabled:opacity-50 transition-colors"
+              disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
       </div>
-    </ng-container>
-    <ng-template #missing>
-      <p>لم يتم العثور على الشهادة.</p>
-    </ng-template>
-  </div>
-</section>
+    </div>
+  </main>
+</div>

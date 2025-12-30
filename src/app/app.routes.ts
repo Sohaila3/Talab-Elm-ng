@@ -4,12 +4,14 @@ import { CoursesComponent } from './components/courses/courses.component';
 import { AddCourseComponent } from './components/add-course/add-course.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { MaterialStructureComponent } from './components/material-structure/material-structure.component';
 
 export const routes: Routes = [
   { path: '', component: CoursesComponent },
   { path: 'add-course', component: AddCourseComponent },
   { path: 'edit-course/:id', component: AddCourseComponent },
   { path: 'course/:id', component: CourseDetailComponent },
+  { path: 'course/:courseId/material/:materialId', component: MaterialStructureComponent },
   { path: '**', redirectTo: '' }
 ];
 
