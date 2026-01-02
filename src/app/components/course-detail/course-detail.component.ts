@@ -130,9 +130,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       // Set Breadcrumbs
       if (this.course) {
         this.headerService.setBreadcrumbs([
-          { label: 'الشهادات', url: '/' },
+          { label: this.translationService.translate('CERTIFICATES'), url: '/' },
           { label: this.course.code, url: `/course/${id}` },
-          { label: 'المواد' }
+          { label: this.translationService.translate('MATERIALS') }
         ]);
 
         // Only SOCPA has materials

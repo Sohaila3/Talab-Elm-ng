@@ -245,7 +245,7 @@ export class MaterialStructureComponent implements OnInit {
       this.timelineData = [...this.financialAccountingData];
     } else {
       // Fallback or generic
-      this.materialName = 'مادة تجريبية'; // Or fetch from service if exists
+      this.materialName = this.translationService.current === 'ar' ? 'مادة تجريبية' : 'Trial Material';
       // If user navigated from course detail, we might have passed state. 
       // check history state? Angular 7+
       const state = history.state;
