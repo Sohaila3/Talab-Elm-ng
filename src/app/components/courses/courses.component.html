@@ -4,8 +4,8 @@
       <h1 class="section-title">{{ 'CERTIFICATES' | translate }}</h1>
       <p class="section-subtitle">{{ 'SUBTITLE' | translate }}</p>
     </div>
-    <button class="add-course-btn" (click)="toggleAddForm()" [class.cancel]="showAddForm">
-      @if (showAddForm) {
+    <button class="add-course-btn" (click)="toggleAddForm()" [class.cancel]="showAddForm || showEditForm">
+      @if (showAddForm || showEditForm) {
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -40,8 +40,8 @@
           <input name="title" [(ngModel)]="newCourse.title" required [placeholder]="'MATERIAL_NAME' | translate" />
         </div>
         <div class="field">
-          <label>{{ 'العنوان بالإنجليزية' | translate }}</label>
-          <input name="titleEn" [(ngModel)]="newCourse.titleEn" placeholder="English Title" />
+          <label>{{ 'EN_TITLE' | translate }}</label>
+          <input name="titleEn" [(ngModel)]="newCourse.titleEn" [placeholder]="'EN_TITLE' | translate" />
         </div>
         <div class="field">
           <label>{{ 'TYPE' | translate }}</label>
@@ -49,7 +49,7 @@
             <option value="technical">{{ 'TECHNICAL' | translate }}</option>
             <option value="diploma">{{ 'DIPLOMA' | translate }}</option>
             <option value="fellowship">{{ 'FELLOWSHIP' | translate }}</option>
-            <option value="cme">CME</option>
+            <option value="cme">{{ 'CME' | translate }}</option>
           </select>
         </div>
         <div class="field full-row">
@@ -65,8 +65,10 @@
           <div class="checkbox-group">
             <label><input type="checkbox" name="isActive" [(ngModel)]="newCourse.isActive" /> {{ 'ACTIVE' | translate
               }}</label>
-            <label><input type="checkbox" name="hasVideo" [(ngModel)]="newCourse.hasVideo" /> Video</label>
-            <label><input type="checkbox" name="hasBook" [(ngModel)]="newCourse.hasBook" /> Book</label>
+            <label><input type="checkbox" name="hasVideo" [(ngModel)]="newCourse.hasVideo" /> {{ 'VIDEO_EXIST' |
+              translate }}</label>
+            <label><input type="checkbox" name="hasBook" [(ngModel)]="newCourse.hasBook" /> {{ 'BOOK_EXIST' | translate
+              }}</label>
           </div>
         </div>
       </div>
@@ -78,6 +80,62 @@
   </div>
   }
 
+  <!-- Inline Edit Form -->
+  @if (showEditForm && editingCourse) {
+  <div class="inline-form-container animate-in">
+    <div class="form-header">
+      <h3>{{ 'EDIT_CERTIFICATE' | translate }}</h3>
+    </div>
+    <form (ngSubmit)="updateCourse()" class="inline-form">
+      <div class="form-grid">
+        <div class="field">
+          <label>{{ 'CODE' | translate }} *</label>
+          <input name="code" [(ngModel)]="editingCourse.code" required placeholder="SOCPA" />
+        </div>
+        <div class="field">
+          <label>{{ 'MATERIAL_NAME' | translate }} *</label>
+          <input name="title" [(ngModel)]="editingCourse.title" required [placeholder]="'MATERIAL_NAME' | translate" />
+        </div>
+        <div class="field">
+          <label>{{ 'EN_TITLE' | translate }}</label>
+          <input name="titleEn" [(ngModel)]="editingCourse.titleEn" [placeholder]="'EN_TITLE' | translate" />
+        </div>
+        <div class="field">
+          <label>{{ 'TYPE' | translate }}</label>
+          <select name="type" [(ngModel)]="editingCourse.type">
+            <option value="technical">{{ 'TECHNICAL' | translate }}</option>
+            <option value="diploma">{{ 'DIPLOMA' | translate }}</option>
+            <option value="fellowship">{{ 'FELLOWSHIP' | translate }}</option>
+            <option value="cme">{{ 'CME' | translate }}</option>
+          </select>
+        </div>
+        <div class="field full-row">
+          <label>{{ 'DESCRIPTION' | translate }}</label>
+          <textarea name="description" [(ngModel)]="editingCourse.description" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label>{{ 'MATERIALS' | translate }}</label>
+          <input type="number" name="lessonsCount" [(ngModel)]="editingCourse.lessonsCount" min="1" />
+        </div>
+        <div class="field">
+          <label>{{ 'ACTIONS' | translate }}</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="isActive" [(ngModel)]="editingCourse.isActive" /> {{ 'ACTIVE' |
+              translate }}</label>
+            <label><input type="checkbox" name="hasVideo" [(ngModel)]="editingCourse.hasVideo" /> {{ 'VIDEO_EXIST' |
+              translate }}</label>
+            <label><input type="checkbox" name="hasBook" [(ngModel)]="editingCourse.hasBook" /> {{ 'BOOK_EXIST' |
+              translate }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">{{ 'CANCEL' | translate }}</button>
+        <button type="submit" class="btn-primary">{{ 'SAVE_CHANGES' | translate }}</button>
+      </div>
+    </form>
+  </div>
+  }
   <div class="filters-row">
     <div class="filter-tabs">
       @for (filter of filters; track filter.id) {
@@ -95,81 +153,49 @@
       }
       }
     </div>
-    <button class="settings-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path
-          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-        </path>
-      </svg>
-    </button>
-
   </div>
 
   <div class="courses-grid">
     @for (course of filteredCourses; track course.id) {
     <div class="course-card" (click)="openCourse(course.id)">
       <div class="card-header">
-        <div class="card-left-icon">
-          <button class="delete-btn" (click)="$event.stopPropagation(); deleteCourse(course.id)">
-            <!-- trash icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-          </button>
-        </div>
+        <!-- LEFT: Certificate icon + Status badge -->
         <div class="card-icons">
+          <div class="certificate-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"></circle>
+              <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+            </svg>
+          </div>
           <span class="status-badge" [class.active]="course.isActive" [class.inactive]="!course.isActive">
-            {{ (course.isActive ? 'ACTIVE' : 'INACTIVE') | translate }}
             <span class="status-dot"></span>
+            {{ (course.isActive ? 'ACTIVE' : 'INACTIVE') | translate }}
           </span>
-          @if (course.hasVideo) {
-          <span class="icon-badge video">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-              <polyline points="17 2 12 7 7 2"></polyline>
-            </svg>
-          </span>
-          }
-          @if (course.hasBook) {
-          <span class="icon-badge book">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
-          </span>
-          }
-          @if (!course.hasVideo && !course.hasBook) {
-          <span class="icon-badge layers">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
-          </span>
-          }
         </div>
+        <!-- RIGHT: Edit button -->
+        <button class="edit-btn" (click)="$event.stopPropagation(); openEditCourse(course)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+          </svg>
+        </button>
       </div>
       <div class="card-body">
-        <span class="course-code">{{ course.code }}</span>
-        <h3 class="course-title">{{ course.title }}</h3>
-        <span class="course-title-en">{{ course.titleEn }}</span>
-        <p class="course-description">{{ course.description }}</p>
+        <h3 class="course-title">{{ translationService.current === 'ar' ? course.title : course.titleEn }}</h3>
+        <p class="course-description">{{ translationService.current === 'ar' ? course.description : course.descriptionEn
+          }}</p>
       </div>
       <div class="card-footer">
         <div class="lessons-count">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
           </svg>
           @if (course.lessonsCount > 0) {
-          <span>{{ course.lessonsCount }} {{ 'LESSONS' | translate }}</span>
+          <span>{{ course.lessonsCount }} {{ 'MATERIALS' | translate }}</span>
           } @else {
           <span>{{ 'ADD_MATERIALS' | translate }}</span>
           }

@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { CourseService, Course } from '../../services/course.service';
 import { HeaderService } from '../../services/header.service';
 import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 interface Material {
   id: number;
   name: string;
+  nameEn: string;
   type: string;
   code: string;
   color: string;
@@ -18,25 +20,41 @@ interface Material {
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.css'
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  course: Course | undefined;
+  course: Course | undefined; // Add/Edit Form
   showAddForm = false;
+  showEditForm = false;
+  editingMaterial: Material | null = null;
+
+  // Delete Modal
+  showDeleteModal = false;
+  deletingMaterialId: number | null = null;
   searchTerm = '';
   newMaterialColor: string = '#1877F2';
   newMaterialName: string = '';
+  newMaterialNameEn: string = '';
   newMaterialCode: string = '';
   newMaterialType: string = 'Public';
   newMaterialAssignedTo: string = 'Instructor1@taleb.com';
+
+  // Edit Form Fields
+  editMaterialName: string = '';
+  editMaterialNameEn: string = '';
+  editMaterialCode: string = '';
+  editMaterialType: string = 'Public';
+  editMaterialColor: string = '#1877F2';
+  editMaterialAssignedTo: string = 'Instructor1@taleb.com';
 
   // SOCPA materials (id = 1 is SOCPA course)
   socpaMaterials: Material[] = [
     {
       id: 1,
       name: 'المحاسبة المالية',
+      nameEn: 'Financial Accounting',
       type: 'Public',
       code: 'FAR',
       color: '#1D4ED8',
@@ -45,6 +63,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     {
       id: 2,
       name: 'المراجعة',
+      nameEn: 'Auditing',
       type: 'Public',
       code: 'AUD',
       color: '#EA580C',
@@ -53,6 +72,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     {
       id: 3,
       name: 'الأنظمة',
+      nameEn: 'Regulations',
       type: 'Public',
       code: 'REG',
       color: '#7C3AED',
@@ -61,6 +81,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     {
       id: 4,
       name: 'الزكاة والضريبة',
+      nameEn: 'Zakat and Tax',
       type: 'Public',
       code: 'ZTX',
       color: '#EAB308',
@@ -69,6 +90,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     {
       id: 5,
       name: 'المحاسبة الإدارية والحكومية',
+      nameEn: 'Management & Government Accounting',
       type: 'Public',
       code: 'MGA',
       color: '#0D9488',
@@ -77,6 +99,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     {
       id: 6,
       name: 'بيئة الأعمال',
+      nameEn: 'Business Environment',
       type: 'Public',
       code: 'BEV',
       color: '#6D28D9',
@@ -129,6 +152,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
+    this.showEditForm = false;
+    this.editingMaterial = null;
   }
 
   onSearch(term: string) {
@@ -143,15 +168,33 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
     const lowerTerm = this.searchTerm.toLowerCase();
     this.filteredMaterials = this.materials.filter(m =>
-      m.name.toLowerCase().includes(lowerTerm) ||
+      (m.name && m.name.toLowerCase().includes(lowerTerm)) ||
+      (m.nameEn && m.nameEn.toLowerCase().includes(lowerTerm)) ||
       m.code.toLowerCase().includes(lowerTerm) ||
       m.assignedTo.toLowerCase().includes(lowerTerm)
     );
   }
 
+  openDeleteModal(id: number) {
+    this.deletingMaterialId = id;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deletingMaterialId = null;
+  }
+
+  confirmDelete() {
+    if (this.deletingMaterialId !== null) {
+      this.materials = this.materials.filter(m => m.id !== this.deletingMaterialId);
+      this.filterMaterials();
+    }
+    this.closeDeleteModal();
+  }
+
   deleteMaterial(id: number) {
-    this.materials = this.materials.filter(m => m.id !== id);
-    this.filterMaterials();
+    this.openDeleteModal(id);
   }
 
   openMaterialStructure(material: Material) {
@@ -170,6 +213,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     const newMat: Material = {
       id: Date.now(),
       name: this.newMaterialName,
+      nameEn: this.newMaterialNameEn || this.newMaterialName,
       type: this.newMaterialType,
       code: this.newMaterialCode,
       color: this.newMaterialColor,
@@ -184,6 +228,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.newMaterialName = '';
+    this.newMaterialNameEn = '';
     this.newMaterialCode = '';
     this.newMaterialType = 'Public';
     this.newMaterialColor = '#1877F2';
@@ -192,6 +237,47 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   cancelAdd() {
     this.showAddForm = false;
+  }
+
+  // Edit Material Methods
+  openEditMaterial(material: Material) {
+    this.editingMaterial = material;
+    this.editMaterialName = material.name;
+    this.editMaterialNameEn = material.nameEn;
+    this.editMaterialCode = material.code;
+    this.editMaterialType = material.type;
+    this.editMaterialColor = material.color;
+    this.editMaterialAssignedTo = material.assignedTo;
+    this.showEditForm = true;
+    this.showAddForm = false;
+  }
+
+  updateMaterial() {
+    if (!this.editingMaterial) return;
+    if (!this.editMaterialName || !this.editMaterialCode) {
+      alert(this.translationService.translate('ALERT_FILL_REQUIRED'));
+      return;
+    }
+
+    const idx = this.materials.findIndex(m => m.id === this.editingMaterial!.id);
+    if (idx !== -1) {
+      this.materials[idx] = {
+        ...this.materials[idx],
+        name: this.editMaterialName,
+        nameEn: this.editMaterialNameEn || this.editMaterialName,
+        code: this.editMaterialCode,
+        type: this.editMaterialType,
+        color: this.editMaterialColor,
+        assignedTo: this.editMaterialAssignedTo
+      };
+    }
+    this.filterMaterials();
+    this.cancelEdit();
+  }
+
+  cancelEdit() {
+    this.showEditForm = false;
+    this.editingMaterial = null;
   }
 
 }

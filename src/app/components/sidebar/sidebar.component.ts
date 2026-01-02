@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SidebarStateService } from '../../services/sidebar-state.service';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 interface MenuItem {
   icon: string;
-  label: string;
+  labelKey: string;
   active: boolean;
   badge?: number;
 }
@@ -13,20 +14,20 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[] = [
-    { label: 'الرئيسية', icon: 'home', active: false },
-    { label: 'الشهادات', icon: 'award', active: true },
-    { label: 'الحصص المباشرة', icon: 'video', active: false },
-    { label: 'إدارة الحسابات', icon: 'users', active: false },
-    { label: 'الأسعار', icon: 'tag', active: false },
-    { label: 'الاشتراكات', icon: 'shield', active: false },
-    { label: 'المدفوعات', icon: 'credit-card', active: false },
-    { label: 'خدمة العملاء', icon: 'headphones', active: false }
+    { labelKey: 'HOME', icon: 'home', active: false },
+    { labelKey: 'CERTIFICATES', icon: 'award', active: true },
+    { labelKey: 'LIVE_SESSIONS', icon: 'video', active: false },
+    { labelKey: 'ACCOUNT_MANAGEMENT', icon: 'users', active: false },
+    { labelKey: 'PRICES', icon: 'tag', active: false },
+    { labelKey: 'SUBSCRIPTIONS', icon: 'shield', active: false },
+    { labelKey: 'PAYMENTS', icon: 'credit-card', active: false },
+    { labelKey: 'CUSTOMER_SERVICE', icon: 'headphones', active: false }
   ];
   collapsed = false;
   isOpen = false;

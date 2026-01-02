@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../services/course.service';
@@ -7,7 +8,7 @@ import { CourseService } from '../../services/course.service';
 @Component({
   selector: 'app-add-course',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.css']
 })
@@ -17,6 +18,7 @@ export class AddCourseComponent implements OnInit {
     title: '',
     titleEn: '',
     description: '',
+    descriptionEn: '',
     lessonsCount: 1,
     isActive: true,
     hasVideo: false,
@@ -27,7 +29,7 @@ export class AddCourseComponent implements OnInit {
   isEdit = false;
   editingId?: number;
 
-  constructor(private cs: CourseService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private cs: CourseService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -41,6 +43,7 @@ export class AddCourseComponent implements OnInit {
           title: course.title,
           titleEn: course.titleEn,
           description: course.description,
+          descriptionEn: course.descriptionEn,
           lessonsCount: course.lessonsCount,
           isActive: course.isActive,
           hasVideo: course.hasVideo,
@@ -55,8 +58,9 @@ export class AddCourseComponent implements OnInit {
     const payload = {
       code: this.model.code || 'NEW',
       title: this.model.title || 'عنوان جديد',
-      titleEn: this.model.titleEn || '',
+      titleEn: this.model.titleEn || 'New Title',
       description: this.model.description || '',
+      descriptionEn: this.model.descriptionEn || '',
       lessonsCount: Number(this.model.lessonsCount) || 1,
       isActive: !!this.model.isActive,
       hasVideo: !!this.model.hasVideo,

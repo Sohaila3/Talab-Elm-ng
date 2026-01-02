@@ -1,59 +1,69 @@
 <section class="add-course-page">
   <div class="container">
-    <h2>{{ isEdit ? 'تعديل الشهادة' : 'إضافة شهادة جديدة' }}</h2>
-    <p class="lead">{{ isEdit ? 'عدل بيانات الشهادة ثم احفظ التغييرات.' : 'املأ بيانات الشهادة الجديدة وسيتم عرضها مباشرة في قائمة الشهادات.' }}</p>
+    <h2>{{ (isEdit ? 'EDIT_CERTIFICATE' : 'ADD_NEW_CERTIFICATE') | translate }}</h2>
+    <p class="lead">{{ (isEdit ? 'EDIT_MSG' : 'ADD_MSG') | translate }}</p>
 
     <form (ngSubmit)="submit()" #f="ngForm">
       <div class="form-grid">
         <div class="field">
-          <label>رمز الشهادة</label>
-          <input name="code" [(ngModel)]="model.code" required placeholder="مثل: SOCPA" />
+          <label>{{ 'CODE' | translate }}</label>
+          <input name="code" [(ngModel)]="model.code" required placeholder="SOCPA" />
         </div>
 
         <div class="field">
-          <label>العنوان</label>
-          <input name="title" [(ngModel)]="model.title" required placeholder="عنوان الشهادة" />
+          <label>{{ 'TITLE' | translate }} {{ 'NAME_AR' | translate }}</label>
+          <input name="title" [(ngModel)]="model.title" required [placeholder]="'TITLE' | translate" />
         </div>
 
         <div class="field">
-          <label>العنوان بالإنجليزية</label>
-          <input name="titleEn" [(ngModel)]="model.titleEn" placeholder="Optional" />
+          <label>{{ 'TITLE' | translate }} {{ 'NAME_EN' | translate }}</label>
+          <input name="titleEn" [(ngModel)]="model.titleEn" [placeholder]="'OPTIONAL' | translate" />
         </div>
 
         <div class="field">
-          <label>النوع</label>
+          <label>{{ 'TYPE' | translate }}</label>
           <select name="type" [(ngModel)]="model.type">
-            <option value="technical">فني</option>
-            <option value="diploma">دبلوم</option>
-            <option value="fellowship">زمالة</option>
-            <option value="cme">CME</option>
+            <option value="technical">{{ 'TECHNICAL' | translate }}</option>
+            <option value="diploma">{{ 'DIPLOMA' | translate }}</option>
+            <option value="fellowship">{{ 'FELLOWSHIP' | translate }}</option>
+            <option value="cme">{{ 'CME' | translate }}</option>
           </select>
         </div>
 
         <div class="field full-row">
-          <label>الوصف</label>
-          <textarea name="description" [(ngModel)]="model.description" placeholder="وصف مختصر عن الشهادة"></textarea>
+          <label>{{ 'DESCRIPTION' | translate }} {{ 'NAME_AR' | translate }}</label>
+          <textarea name="description" [(ngModel)]="model.description"
+            [placeholder]="'DESC_PLACEHOLDER' | translate"></textarea>
+        </div>
+
+        <div class="field full-row">
+          <label>{{ 'DESCRIPTION' | translate }} {{ 'NAME_EN' | translate }}</label>
+          <textarea name="descriptionEn" [(ngModel)]="model.descriptionEn"
+            [placeholder]="'DESC_PLACEHOLDER' | translate"></textarea>
         </div>
 
         <div class="field">
-          <label>المواد</label>
+          <label>{{ 'LESSONS' | translate }}</label>
           <input type="number" name="lessonsCount" [(ngModel)]="model.lessonsCount" min="1" />
         </div>
 
         <div class="field">
-          <label>خيارات</label>
+          <label>{{ 'OPTIONS' | translate }}</label>
           <div class="checkbox-row">
-            <label><input type="checkbox" name="isActive" [(ngModel)]="model.isActive" /> مفعلة</label>
-            <label><input type="checkbox" name="hasVideo" [(ngModel)]="model.hasVideo" /> يوجد فيديو</label>
-            <label><input type="checkbox" name="hasBook" [(ngModel)]="model.hasBook" /> يوجد كتاب</label>
+            <label><input type="checkbox" name="isActive" [(ngModel)]="model.isActive" /> {{ 'ACTIVE' | translate
+              }}</label>
+            <label><input type="checkbox" name="hasVideo" [(ngModel)]="model.hasVideo" /> {{ 'VIDEO_EXIST' | translate
+              }}</label>
+            <label><input type="checkbox" name="hasBook" [(ngModel)]="model.hasBook" /> {{ 'BOOK_EXIST' | translate
+              }}</label>
           </div>
         </div>
 
       </div>
 
       <div class="actions">
-        <button type="submit" class="btn btn-primary">{{ isEdit ? 'حفظ التعديل' : 'حفظ وإضافة' }}</button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">إلغاء</button>
+        <button type="submit" class="btn btn-primary">{{ (isEdit ? 'SAVE_EDIT' : 'SAVE_ADD') | translate }}</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
       </div>
     </form>
   </div>

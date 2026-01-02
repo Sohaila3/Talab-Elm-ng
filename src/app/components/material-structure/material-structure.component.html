@@ -1,4 +1,4 @@
-<div class="min-h-[900px] w-full bg-[#F5F7FA] font-['Cairo'] flex flex-col" dir="rtl">
+<div class="min-h-[900px] w-full bg-[#F5F7FA] font-['Cairo'] flex flex-col">
 
     <!-- Main Body -->
     <main class="flex-1 p-10 overflow-y-auto">
@@ -8,22 +8,35 @@
             <div class="flex items-start justify-between mb-10">
                 <div>
                     <h1 class="text-[32px] font-black text-[#0F172A] mb-2 leading-tight">
-                        هيكل مادة: {{ materialName }}
+                        {{ 'MATERIAL_STRUCTURE' | translate }}: {{ materialName }}
                     </h1>
                     <p class="text-[#64748B] text-lg font-medium">
-                        قم بإدارة هيكل الدورة التدريبية من خلال تنظيم الفصول والاختبارات المحاكية
+                        {{ 'MANAGE_STRUCTURE_DESC' | translate }}
                     </p>
                 </div>
 
                 <div class="flex items-center gap-3">
 
                     <button (click)="toggleAddForm()"
-                        class="h-11 px-6 rounded-xl font-bold text-sm bg-[#1877F2] text-white hover:bg-[#1565D8] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <span>إضافة عنصر جديد</span>
+                        [class]="showAddForm || showEditForm
+                            ? 'h-11 px-6 rounded-xl font-bold text-sm bg-[#EFF6FF] text-[#1877F2] hover:bg-[#DBEAFE] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/5'
+                            : 'h-11 px-6 rounded-xl font-bold text-sm bg-[#1877F2] text-white hover:bg-[#1565D8] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20'">
+                        <ng-container *ngIf="showAddForm || showEditForm; else addBtnIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>{{ 'CANCEL' | translate }}</span>
+                        </ng-container>
+                        <ng-template #addBtnIcon>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>{{ 'ADD_ITEM' | translate }}</span>
+                        </ng-template>
                     </button>
                 </div>
             </div>
@@ -43,8 +56,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-[#0F172A]">إضافة عنصر جديد</h3>
-                            <p class="text-sm text-[#64748B] font-medium">أدخل تفاصيل العنصر ليتم إضافته إلى الهيكل</p>
+                            <h3 class="text-lg font-black text-[#0F172A]">{{ 'ADD_ITEM' | translate }}</h3>
+                            <p class="text-sm text-[#64748B] font-medium">{{ 'ITEM_DETAILS_MSG' | translate }}</p>
                         </div>
                     </div>
 
@@ -52,21 +65,25 @@
                     <div class="p-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                             <div class="col-span-1 md:col-span-2">
-                                <label class="block text-sm font-bold text-[#475569] mb-2">العنوان <span
-                                        class="text-red-500">*</span></label>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ITEM_TITLE' | translate
+                                    }} <span class="text-red-500">*</span></label>
                                 <input type="text" [(ngModel)]="newItemTitle"
                                     class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
-                                    placeholder="مثال: الفصل الأول: مقدمة في المحاسبة">
+                                    [placeholder]="'ITEM_TITLE' | translate">
+                                <input type="text" [(ngModel)]="newItemTitleEn"
+                                    class="w-full mt-3 h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                                    [placeholder]="'ITEM_TITLE_EN' | translate">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-[#475569] mb-2">النوع</label>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ITEM_TYPE' | translate
+                                    }}</label>
                                 <div class="relative">
                                     <select [(ngModel)]="newItemType"
                                         class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none shadow-sm">
-                                        <option value="chapter">فصل (Chapter)</option>
-                                        <option value="exam">اختبار مرحلي (Exam)</option>
-                                        <option value="comprehensive">اختبار شامل (Comprehensive)</option>
+                                        <option value="chapter">{{ 'CHAPTER' | translate }}</option>
+                                        <option value="exam">{{ 'PROGRESS_EXAM' | translate }}</option>
+                                        <option value="comprehensive">{{ 'COMPREHENSIVE_EXAM' | translate }}</option>
                                     </select>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B] pointer-events-none"
@@ -78,18 +95,21 @@
                             </div>
 
                             <div *ngIf="newItemType === 'chapter'">
-                                <label class="block text-sm font-bold text-[#475569] mb-2">الرمز (Label)</label>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'LABEL' | translate
+                                    }}</label>
                                 <input type="text" [(ngModel)]="newItemLabel"
                                     class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
-                                    placeholder="مثال: F1">
+                                    placeholder="F1">
                             </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-[#475569] mb-2">الوصف الاضافي
-                                    (MetaData)</label>
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ITEM_DESC_AR' | translate
+                                    }}</label>
                                 <input type="text" [(ngModel)]="newItemMeta"
                                     class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
-                                    placeholder="مثال: 4 دروس أو 60 دقيقة">
+                                    [placeholder]="'METADATA' | translate">
+                                <input type="text" [(ngModel)]="newItemMetaEn"
+                                    class="w-full mt-3 h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                                    [placeholder]="'ITEM_DESC_EN' | translate">
                             </div>
                         </div>
                     </div>
@@ -98,10 +118,88 @@
                     <div
                         class="px-8 py-5 bg-[#F8FAFC]/50 border-t border-[#F1F5F9] flex items-center justify-end gap-3">
                         <button (click)="toggleAddForm()"
-                            class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F1F5F9] hover:text-[#475569] transition-all">إلغاء</button>
+                            class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F1F5F9] hover:text-[#475569] transition-all">{{
+                            'CANCEL' | translate }}</button>
                         <button (click)="saveItem()"
                             class="px-8 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">
-                            حفظ العنصر
+                            {{ 'SAVE' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inline Edit Form (replaces add form location) -->
+            <div *ngIf="showEditForm && editingItem" class="mb-10 animate-in slide-in-from-top-4">
+                <div
+                    class="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-[#E2E8F0]/80 overflow-hidden">
+                    <!-- Form Header -->
+                    <div class="px-8 py-6 border-b border-[#F1F5F9] bg-[#F8FAFC]/50 flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-[#EFF6FF] text-[#1877F2] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-[#0F172A]">{{ 'EDIT_ITEM' | translate }}</h3>
+                            <p class="text-sm text-[#64748B] font-medium">{{ 'UPDATE_ITEM_MSG' | translate }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Body -->
+                    <div class="p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ITEM_TITLE' | translate
+                                    }} <span class="text-red-500">*</span></label>
+                                <input type="text" [(ngModel)]="editItemTitle"
+                                    class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    [placeholder]="'ITEM_TITLE' | translate">
+                                <input type="text" [(ngModel)]="editItemTitleEn"
+                                    class="w-full mt-3 h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                                    [placeholder]="'ITEM_TITLE_EN' | translate">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ITEM_TYPE' | translate
+                                    }}</label>
+                                <div class="relative">
+                                    <select [(ngModel)]="editItemType"
+                                        class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none shadow-sm">
+                                        <option value="chapter">{{ 'CHAPTER' | translate }}</option>
+                                        <option value="exam">{{ 'PROGRESS_EXAM' | translate }}</option>
+                                        <option value="comprehensive">{{ 'COMPREHENSIVE_EXAM' | translate }}</option>
+                                    </select>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B] pointer-events-none"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div *ngIf="editItemType === 'chapter'">
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'LABEL' | translate
+                                    }}</label>
+                                <input type="text" [(ngModel)]="editItemLabel"
+                                    class="w-full h-12 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    placeholder="F1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Footer -->
+                    <div
+                        class="px-8 py-5 bg-[#F8FAFC]/50 border-t border-[#F1F5F9] flex items-center justify-end gap-3">
+                        <button (click)="cancelEdit()"
+                            class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F1F5F9] hover:text-[#475569] transition-all">{{
+                            'CANCEL' | translate }}</button>
+                        <button (click)="updateItem()"
+                            class="px-8 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">
+                            {{ 'SAVE_CHANGES' | translate }}
                         </button>
                     </div>
                 </div>
@@ -117,15 +215,15 @@
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-[#0F172A] mb-2">لا يوجد محتوى مضاف حالياً</h3>
-                <p class="text-[#64748B] mb-8">ابدأ بإضافة فصول أو اختبارات لهيكل المادة</p>
+                <h3 class="text-xl font-bold text-[#0F172A] mb-2">{{ 'NO_CONTENT_ADDED' | translate }}</h3>
+                <p class="text-[#64748B] mb-8">{{ 'START_ADDING_MSG' | translate }}</p>
                 <button (click)="toggleAddForm()"
                     class="h-11 px-6 rounded-xl font-bold text-sm bg-[#1877F2] text-white hover:bg-[#1565D8] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    <span>إضافة عنصر جديد</span>
+                    <span>{{ 'ADD_ITEM' | translate }}</span>
                 </button>
             </div>
 
@@ -134,8 +232,9 @@
                 <!-- Vertical Dashed Line -->
                 <div class="absolute top-6 bottom-0 right-[27px] w-px border-r-2 border-dashed border-[#E2E8F0]"></div>
 
-                <div class="space-y-6">
-                    <div *ngFor="let item of timelineData; let i = index" class="relative flex items-start gap-8 group">
+                <div class="space-y-6" cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+                    <div *ngFor="let item of timelineData; let i = index" class="relative flex items-start gap-8 group"
+                        cdkDrag cdkDragLockAxis="y" [cdkDragConstrainPosition]="dragConstraint">
 
                         <!-- Timeline Node Icon -->
                         <div class="relative z-10 flex-shrink-0">
@@ -187,14 +286,16 @@
                             'text-[#1877F2]': item.type === 'exam',
                             'text-[#B45309]': item.type === 'comprehensive'
                           }">
-                                        {{ item.title }}
+                                        {{ translationService.current === 'ar' ? item.title : (item.titleEn ||
+                                        item.title) }}
                                     </h3>
 
                                     <div class="flex items-center gap-3">
                                         <span class="text-sm font-medium text-[#94A3B8] flex items-center gap-1.5">
                                             <span *ngIf="item.type === 'chapter'"
                                                 class="w-1 h-1 rounded-full bg-[#CBD5E1]"></span>
-                                            {{ item.meta }}
+                                            {{ translationService.current === 'ar' ? item.meta : (item.metaEn ||
+                                            item.meta) }}
                                         </span>
 
                                         <!-- Exam specific link -->
@@ -202,7 +303,7 @@
                                             <span class="w-1 h-1 rounded-full bg-[#CBD5E1]"></span>
                                             <span class="text-sm font-bold cursor-pointer hover:underline"
                                                 [ngClass]="item.type === 'comprehensive' ? 'text-[#F59E0B] bg-[#FFFBEB] px-2 py-0.5 rounded' : 'text-[#1877F2]'">
-                                                {{ item.examTypeLabel }}
+                                                {{ translationService.current === 'ar' ? item.examTypeLabel : (item.examTypeLabelEn || item.examTypeLabel) }}
                                             </span>
                                         </ng-container>
                                     </div>
@@ -225,7 +326,7 @@
                                 <!-- Status Badge -->
                                 <div *ngIf="item.status" class="px-3 py-1.5 rounded-lg text-xs font-bold border"
                                     [ngClass]="item.status === 'published' ? 'bg-[#ECFDF5] text-[#10B981] border-[#D1FAE5]' : 'bg-[#F1F5F9] text-[#64748B] border-[#E2E8F0]'">
-                                    {{ item.status === 'published' ? 'منشور' : 'مسودة' }}
+                                    {{ (item.status === 'published' ? 'PUBLISHED' : 'DRAFT') | translate }}
                                 </div>
 
                                 <!-- Actions -->
@@ -270,13 +371,15 @@
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-[#0F172A] mb-2">تأكيد الحذف</h3>
-                <p class="text-[#64748B] mb-8">هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
+                <h3 class="text-xl font-bold text-[#0F172A] mb-2">{{ 'DELETE_CONFIRM_TITLE' | translate }}</h3>
+                <p class="text-[#64748B] mb-8">{{ 'DELETE_CONFIRM_MSG' | translate }}</p>
                 <div class="flex items-center gap-3 w-full">
                     <button (click)="cancelDelete()"
-                        class="flex-1 h-11 rounded-xl font-bold text-sm bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] transition-colors">إلغاء</button>
+                        class="flex-1 h-11 rounded-xl font-bold text-sm bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] transition-colors">{{
+                        'CANCEL' | translate }}</button>
                     <button (click)="confirmDelete()"
-                        class="flex-1 h-11 rounded-xl font-bold text-sm bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/20 transition-colors">حذف</button>
+                        class="flex-1 h-11 rounded-xl font-bold text-sm bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/20 transition-colors">{{
+                        'DELETE' | translate }}</button>
                 </div>
             </div>
         </div>
@@ -294,8 +397,8 @@
             <!-- Header -->
             <div class="px-8 py-6 border-b border-[#E2E8F0]/80 flex items-center justify-between">
                 <div>
-                    <h3 class="text-xl font-black text-[#0F172A]">تعديل العنصر</h3>
-                    <p class="text-[#64748B] text-sm mt-1">قم بتحديث بيانات الفصل أو الاختبار</p>
+                    <h3 class="text-xl font-black text-[#0F172A]">{{ 'EDIT_ITEM' | translate }}</h3>
+                    <p class="text-[#64748B] text-sm mt-1">{{ 'UPDATE_ITEM_MSG' | translate }}</p>
                 </div>
                 <button (click)="cancelEdit()"
                     class="w-8 h-8 rounded-full hover:bg-[#F1F5F9] flex items-center justify-center text-[#94A3B8] transition-colors">
@@ -311,35 +414,41 @@
             <div class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="col-span-1 md:col-span-2">
-                        <label class="block text-sm font-bold text-[#64748B] mb-2">العنوان <span
+                        <label class="block text-sm font-bold text-[#64748B] mb-2">{{ 'ITEM_TITLE' | translate }} <span
                                 class="text-red-500">*</span></label>
                         <input type="text" [(ngModel)]="editItemTitle"
                             class="w-full h-11 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm placeholder:text-[#94A3B8]/70"
-                            placeholder="عنوان الفصل أو الاختبار">
+                            [placeholder]="'ITEM_TITLE' | translate">
+                        <input type="text" [(ngModel)]="editItemTitleEn"
+                            class="w-full mt-3 h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                            [placeholder]="'ITEM_TITLE_EN' | translate">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-[#64748B] mb-2">النوع</label>
+                        <label class="block text-sm font-bold text-[#64748B] mb-2">{{ 'ITEM_TYPE' | translate }}</label>
                         <select [(ngModel)]="editItemType"
                             class="w-full h-11 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm appearance-none">
-                            <option value="chapter">فصل (Chapter)</option>
-                            <option value="exam">اختبار مرحلي (Exam)</option>
-                            <option value="comprehensive">اختبار شامل (Comprehensive)</option>
+                            <option value="chapter">{{ 'CHAPTER' | translate }}</option>
+                            <option value="exam">{{ 'PROGRESS_EXAM' | translate }}</option>
+                            <option value="comprehensive">{{ 'COMPREHENSIVE_EXAM' | translate }}</option>
                         </select>
                     </div>
 
                     <div *ngIf="editItemType === 'chapter'">
-                        <label class="block text-sm font-bold text-[#64748B] mb-2">الرمز (Label)</label>
+                        <label class="block text-sm font-bold text-[#64748B] mb-2">{{ 'LABEL' | translate }}</label>
                         <input type="text" [(ngModel)]="editItemLabel"
                             class="w-full h-11 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm placeholder:text-[#94A3B8]/70"
-                            placeholder="مثال: F1">
+                            placeholder="F1">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-[#64748B] mb-2">الوصف الاضافي (MetaData)</label>
+                        <label class="block text-sm font-bold text-[#64748B] mb-2">{{ 'METADATA' | translate }}</label>
                         <input type="text" [(ngModel)]="editItemMeta"
                             class="w-full h-11 px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] bg-white focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm placeholder:text-[#94A3B8]/70"
-                            placeholder="مثال: 4 دروس">
+                            [placeholder]="'METADATA' | translate">
+                        <input type="text" [(ngModel)]="editItemMetaEn"
+                            class="w-full mt-3 h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                            [placeholder]="'ITEM_DESC_EN' | translate">
                     </div>
                 </div>
             </div>
@@ -348,10 +457,12 @@
             <div
                 class="px-8 py-6 bg-[#F8FAFC]/50 border-t border-[#E2E8F0]/80 flex items-center justify-end gap-3 rounded-b-2xl">
                 <button (click)="cancelEdit()"
-                    class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] hover:border-[#CBD5E1] transition-all shadow-sm">إلغاء</button>
+                    class="px-6 py-2.5 rounded-xl font-bold text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] hover:border-[#CBD5E1] transition-all shadow-sm">{{
+                    'CANCEL' | translate }}</button>
                 <button (click)="updateItem()"
-                    class="px-8 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">حفظ
-                    التغييرات</button>
+                    class="px-8 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">
+                    {{ 'SAVE_CHANGES' | translate }}
+                </button>
             </div>
         </div>
     </div>

@@ -18,11 +18,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class CoursesComponent implements OnInit {
   showAddForm = false;
+  showEditForm = false;
+  editingCourse: any = null;
   newCourse = {
     code: '',
     title: '',
     titleEn: '',
     description: '',
+    descriptionEn: '',
     lessonsCount: 1,
     isActive: true,
     hasVideo: false,
@@ -64,7 +67,7 @@ export class CoursesComponent implements OnInit {
     private courseService: CourseService,
     private router: Router,
     private headerService: HeaderService,
-    private translationService: TranslationService
+    public translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
@@ -88,6 +91,8 @@ export class CoursesComponent implements OnInit {
 
   toggleAddForm(): void {
     this.showAddForm = !this.showAddForm;
+    this.showEditForm = false;
+    this.editingCourse = null;
     if (this.showAddForm) {
       this.resetNewCourse();
     }
@@ -99,6 +104,7 @@ export class CoursesComponent implements OnInit {
       title: '',
       titleEn: '',
       description: '',
+      descriptionEn: '',
       lessonsCount: 1,
       isActive: true,
       hasVideo: false,
@@ -113,7 +119,7 @@ export class CoursesComponent implements OnInit {
 
   saveCourse(): void {
     if (!this.newCourse.code || !this.newCourse.title) {
-      alert('الرجاء إكمال البيانات المطلوبة (الرمز والعنوان)');
+      alert(this.translationService.translate('ALERT_FILL_DATA'));
       return;
     }
 
@@ -141,5 +147,28 @@ export class CoursesComponent implements OnInit {
     if (confirm(msg)) {
       this.courseService.deleteCourse(id);
     }
+  }
+
+  // Edit Course Methods
+  openEditCourse(course: Course): void {
+    this.editingCourse = { ...course };
+    this.showEditForm = true;
+    this.showAddForm = false;
+  }
+
+  updateCourse(): void {
+    if (!this.editingCourse) return;
+    if (!this.editingCourse.code || !this.editingCourse.title) {
+      alert(this.translationService.translate('ALERT_FILL_DATA'));
+      return;
+    }
+    const { id, ...changes } = this.editingCourse;
+    this.courseService.updateCourse(id, changes);
+    this.cancelEdit();
+  }
+
+  cancelEdit(): void {
+    this.showEditForm = false;
+    this.editingCourse = null;
   }
 }

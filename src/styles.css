@@ -12,8 +12,18 @@
 body {
   font-family: 'Cairo', sans-serif;
   background-color: #f8f9fa;
-  direction: rtl;
   min-height: 100vh;
+}
+
+/* Dynamic direction based on html dir attribute */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: left;
 }
 
 html {

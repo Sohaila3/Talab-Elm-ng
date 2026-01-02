@@ -1,0 +1,41 @@
+/* Material Structure Component Styles */
+
+/* Drag and Drop Styles */
+
+/* HIDE the preview completely - it causes the horizontal movement issue */
+.cdk-drag-preview {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Keep item colors while dragging */
+.cdk-drag-placeholder {
+    opacity: 1;
+    border-radius: 16px;
+}
+
+/* Animation when dropping */
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Smooth transition for other items */
+.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Grab cursor for draggable items */
+[cdkDrag] {
+    cursor: grab;
+    user-select: none;
+}
+
+[cdkDrag]:active {
+    cursor: grabbing;
+}
+
+/* Container for the drop list */
+[cdkDropList] {
+    min-height: 50px;
+}

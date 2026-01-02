@@ -3133,3 +3133,98 @@ body {
 }
 .add-course-btn svg { width: 16px; height: 16px; color: #fff; }
 
+
+/* Delete Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 8px;
+}
+
+.modal-message {
+  font-size: 14px;
+  color: #6B7280;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  background: white;
+  color: #4B5563;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #F9FAFB;
+}
+
+.btn-delete {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  background: #EF4444;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #DC2626;
+}
+
