@@ -39,3 +39,31 @@
 [cdkDropList] {
     min-height: 50px;
 }
+
+/* ===== Mobile Responsive Styles ===== */
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+    main {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    main {
+        padding: 1rem !important;
+    }
+
+    /* Page Title Section */
+    .min-h-\[900px\] {
+        min-height: auto !important;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 640px) {
+    main {
+        padding: 0.75rem !important;
+    }
+}
