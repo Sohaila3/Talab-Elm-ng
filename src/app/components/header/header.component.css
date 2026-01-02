@@ -332,9 +332,16 @@
   display: none;
   background: none;
   border: none;
-  padding: 4px;
+  padding: 8px;
   color: #64748b;
-  margin-inline-end: -8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .header-left {
@@ -345,7 +352,9 @@
 
 @media (max-width: 1024px) {
   .mobile-menu-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .header-spacer {
@@ -358,11 +367,23 @@
   }
 
   .header-left {
-    gap: 8px;
+    gap: 12px;
   }
 
   .materials-dropdown-container {
     display: none;
+  }
+
+  .header {
+    padding: 0 16px;
+  }
+
+  .header-logo {
+    height: 28px;
+  }
+
+  .header-right {
+    gap: 12px;
   }
 }
 

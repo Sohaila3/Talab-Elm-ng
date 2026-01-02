@@ -169,3 +169,132 @@ input {
     transform: translateY(0);
   }
 }
+
+/* Mobile Responsive Buttons */
+@media (max-width: 768px) {
+  button,
+  .btn,
+  [class*="btn-"] {
+    font-size: 12px !important;
+    padding: 8px 12px !important;
+    min-height: 36px;
+  }
+
+  button.h-11,
+  button.h-12 {
+    height: 40px !important;
+  }
+
+  .px-6 {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .px-8 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .text-sm {
+    font-size: 12px !important;
+  }
+
+  .add-course-btn {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+  }
+
+  /* Modal responsive */
+  .modal-content {
+    max-width: 95vw;
+    margin: 10px;
+    border-radius: 16px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 16px;
+  }
+
+  /* Form inputs responsive */
+  input,
+  select,
+  textarea {
+    font-size: 14px !important;
+  }
+
+  input.h-11,
+  input.h-12,
+  select.h-11,
+  select.h-12 {
+    height: 40px !important;
+  }
+
+  /* Grid responsive */
+  .grid-cols-3 {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+
+  /* Page headers responsive */
+  h1 {
+    font-size: 24px !important;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  h3 {
+    font-size: 16px !important;
+  }
+
+  /* Cards and containers */
+  .p-8 {
+    padding: 16px !important;
+  }
+
+  .p-10 {
+    padding: 16px !important;
+  }
+
+  .gap-6 {
+    gap: 12px !important;
+  }
+
+  .gap-8 {
+    gap: 16px !important;
+  }
+
+  /* Table responsive */
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px 12px !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  button,
+  .btn,
+  [class*="btn-"] {
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+    min-height: 32px;
+  }
+
+  h1 {
+    font-size: 20px !important;
+  }
+
+  .text-\[40px\] {
+    font-size: 22px !important;
+  }
+
+  .text-\[32px\] {
+    font-size: 20px !important;
+  }
+}

@@ -39,7 +39,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   newMaterialNameEn: string = '';
   newMaterialCode: string = '';
   newMaterialType: string = 'Public';
-  newMaterialAssignedTo: string = 'Instructor1@taleb.com';
+  newMaterialAssignedTo: string = 'instructor@taleb.com';
 
   // Edit Form Fields
   editMaterialName: string = '';
@@ -47,7 +47,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   editMaterialCode: string = '';
   editMaterialType: string = 'Public';
   editMaterialColor: string = '#1877F2';
-  editMaterialAssignedTo: string = 'Instructor1@taleb.com';
+  editMaterialAssignedTo: string = 'instructor@taleb.com';
 
   // SOCPA materials (id = 1 is SOCPA course)
   socpaMaterials: Material[] = [
@@ -58,7 +58,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       type: 'Public',
       code: 'FAR',
       color: '#1D4ED8',
-      assignedTo: 'Instructor1@taleb.com',
+      assignedTo: 'instructor@taleb.com',
     },
     {
       id: 2,
@@ -67,7 +67,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       type: 'Public',
       code: 'AUD',
       color: '#EA580C',
-      assignedTo: 'Audit_Lead@taleb.com',
+      assignedTo: 'auditlead@taleb.com',
     },
     {
       id: 3,
@@ -76,7 +76,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       type: 'Public',
       code: 'REG',
       color: '#7C3AED',
-      assignedTo: 'Law_Dept@taleb.com',
+      assignedTo: 'lawdept@taleb.com',
     },
     {
       id: 4,
@@ -85,7 +85,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       type: 'Public',
       code: 'ZTX',
       color: '#EAB308',
-      assignedTo: 'Tax_Expert@taleb.com',
+      assignedTo: 'taxexpert@taleb.com',
     },
     {
       id: 5,
@@ -103,7 +103,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       type: 'Public',
       code: 'BEV',
       color: '#6D28D9',
-      assignedTo: 'HR_Dept@taleb.com',
+      assignedTo: 'hrdept@taleb.com',
     },
   ];
 
@@ -232,7 +232,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     this.newMaterialCode = '';
     this.newMaterialType = 'Public';
     this.newMaterialColor = '#1877F2';
-    this.newMaterialAssignedTo = 'Instructor1@taleb.com';
+    this.newMaterialAssignedTo = 'instructor@taleb.com';
   }
 
   cancelAdd() {

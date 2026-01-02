@@ -37,6 +37,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.collapsed = !this.collapsed;
     this.collapsedChange.emit(this.collapsed);
   }
+
+  closeSidebar() {
+    this.sidebarState.close();
+  }
+
   @Output() collapsedChange = new EventEmitter<boolean>();
 
   ngOnInit(): void {
