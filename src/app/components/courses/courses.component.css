@@ -29,7 +29,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #3b82f6;
+  background-color: #2563eb;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -40,7 +40,7 @@
 }
 
 .add-course-btn:hover {
-  background-color: #2563eb;
+  background-color: #1e40af;
 }
 
 .filters-row {
@@ -177,6 +177,15 @@
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+/* When a course card is active, make the certificate icon a simple blue color */
+.course-card.active .certificate-icon {
+  color: #1877F2; /* SVGs use currentColor for stroke */
+}
+
+.course-card .certificate-icon svg {
+  stroke: currentColor; /* ensure svg follows the color */
 }
 
 .status-badge {
@@ -433,13 +442,18 @@
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: #2563eb;
   color: white;
   border: none;
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.12);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: #1e40af;
+  box-shadow: 0 10px 26px rgba(21, 101, 216, 0.16);
 }
 
 .btn-primary:disabled {

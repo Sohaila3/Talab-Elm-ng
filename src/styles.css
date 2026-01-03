@@ -298,3 +298,54 @@ input {
     font-size: 20px !important;
   }
 }
+
+/* Disable body scrolling when mobile sidebar is open */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+/* Unified style for "add" buttons across the app */
+button[class*="add-"],
+[class*="add-"] {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[class*="add-"]:hover,
+[class*="add-"]:hover {
+  background-color: #1e40af;
+}
+
+/* Backwards-compatible alias for course add button */
+.add-course-btn {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.add-course-btn:hover {
+  background-color: #1e40af;
+}
+
+/* Utility class to apply the same add-button look to specific buttons */
+.btn-add {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.btn-add:hover {
+  background-color: #1e40af !important;
+}

@@ -1,0 +1,113 @@
+/* Video Management Component Styles */
+
+/* Animation for upload area */
+.upload-area {
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    transform: translateY(-2px);
+}
+
+/* Smooth transitions */
+.transition-smooth {
+    transition: all 0.2s ease;
+}
+
+/* Custom scrollbar for comments */
+.comments-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comments-scroll::-webkit-scrollbar-track {
+    background: #F8FAFC;
+    border-radius: 3px;
+}
+
+.comments-scroll::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 3px;
+}
+
+.comments-scroll::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Status radio buttons animation */
+label.status-option {
+    transition: all 0.2s ease;
+}
+
+label.status-option:hover {
+    transform: scale(1.02);
+}
+
+/* Attachment cards hover effect */
+.attachment-card {
+    transition: all 0.2s ease;
+}
+
+.attachment-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Workflow timeline */
+.workflow-line {
+    background: linear-gradient(to bottom, #E2E8F0 0%, #E2E8F0 100%);
+}
+
+/* Comment reply animation */
+.comment-reply {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .workflow-step {
+        gap: 0.75rem;
+    }
+}
+
+/* Text area auto-resize */
+textarea {
+    min-height: 120px;
+}
+
+/* Image hover overlay */
+.thumbnail-overlay {
+    backdrop-filter: blur(2px);
+}
+
+/* Input focus styles */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #1877F2;
+    box-shadow: 0 0 0 4px rgba(24, 119, 242, 0.1);
+}
+
+/* Number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

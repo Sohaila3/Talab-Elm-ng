@@ -373,6 +373,13 @@ export class MaterialStructureComponent implements OnInit {
     };
   };
 
+  // Navigate to chapter detail page
+  navigateToChapter(item: TimelineItem) {
+    if (item.type === 'chapter') {
+      this.router.navigate(['/course', this.courseId, 'material', this.materialId, 'chapter', item.id]);
+    }
+  }
+
   // Icons helper (since we can't use React Icons directly, we use SVG or classes)
   // In template we will use SVGs similar to reference
 }

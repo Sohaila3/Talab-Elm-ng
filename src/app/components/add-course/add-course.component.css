@@ -24,8 +24,8 @@
 
 .actions { margin-top: 18px; display:flex; gap:12px; justify-content: flex-start; direction: rtl; }
 .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; }
-.btn-primary { background: #000000; color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
-.btn-primary:hover { background: #111111; transform: translateY(-2px); }
+.btn-primary { background: #2563eb; color: #ffffff; box-shadow: 0 8px 20px rgba(24, 119, 242, 0.12); padding: 10px 16px; border-radius: 8px; }
+.btn-primary:hover { background: #1e40af; transform: translateY(-1px); box-shadow: 0 10px 26px rgba(21, 101, 216, 0.16); }
 .btn-secondary { background: transparent; color: #0f172a; border: 1px solid #e6eef8; }
 .btn-secondary:hover { background: #f8fafc; }
 

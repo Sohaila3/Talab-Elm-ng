@@ -157,7 +157,7 @@
 
   <div class="courses-grid">
     @for (course of filteredCourses; track course.id) {
-    <div class="course-card" (click)="openCourse(course.id)">
+    <div class="course-card" (click)="openCourse(course.id)" [class.active]="course.isActive">
       <div class="card-header">
         <!-- LEFT: Certificate icon + Status badge -->
         <div class="card-icons">

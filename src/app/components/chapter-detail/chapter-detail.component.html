@@ -1,0 +1,497 @@
+<div class="min-h-screen w-full bg-[#F5F7FA] font-['Cairo'] flex flex-col">
+
+    <!-- Main Body -->
+    <main class="flex-1 p-4 sm:p-6 md:p-10 overflow-y-auto">
+        <div class="max-w-[1200px] mx-auto pb-10 sm:pb-20">
+
+            <!-- Top Info Card -->
+            <div
+                class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 border border-[#E2E8F0] shadow-sm mb-6 sm:mb-8 flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-0">
+                <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                        <span
+                            class="bg-[#EFF6FF] text-[#1877F2] text-xs font-bold px-2.5 py-1 rounded-lg border border-[#DBEAFE]">
+                            CHAPTER {{ chapterInfo.label.replace('F', '') || '1' }}
+                        </span>
+                        <span *ngIf="chapterInfo.isActive"
+                            class="bg-[#ECFDF5] text-[#10B981] text-xs font-bold px-2.5 py-1 rounded-lg border border-[#D1FAE5]">
+                            {{ 'ACTIVE_NOW' | translate }}
+                        </span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-[#0F172A] mb-2 sm:mb-3">
+                        {{ chapterLabel }}: {{ chapterTitle }}
+                    </h1>
+                    <p
+                        class="text-[#64748B] font-medium text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mb-4 sm:mb-6">
+                        {{ 'CHAPTER_DESC_PART1' | translate }} <span class="font-bold text-[#0F172A]">{{
+                            modulesData.length }} {{ 'MODULES' | translate }}</span> {{ 'CHAPTER_DESC_PART2' | translate
+                        }}
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-bold text-[#64748B]">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-[#94A3B8]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            <span>{{ modulesData.length }} {{ 'MODULES' | translate }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-[#94A3B8]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{{ 'DURATION' | translate }} {{ chapterDuration }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 sm:gap-3 w-full lg:w-auto">
+                    <button (click)="toggleAddForm()"
+                        [class]="showAddForm || showEditForm
+                            ? 'h-10 sm:h-12 px-4 sm:px-6 rounded-xl font-bold text-xs sm:text-sm bg-[#EFF6FF] text-[#1877F2] hover:bg-[#DBEAFE] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/5 whitespace-nowrap'
+                            : 'h-10 sm:h-12 px-4 sm:px-6 rounded-xl font-bold text-xs sm:text-sm bg-[#1877F2] text-white hover:bg-[#1565D8] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 whitespace-nowrap'">
+                        <ng-container *ngIf="showAddForm || showEditForm; else addIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>{{ 'CANCEL' | translate }}</span>
+                        </ng-container>
+                        <ng-template #addIcon>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>{{ 'ADD_NEW_MODULE' | translate }}</span>
+                        </ng-template>
+                    </button>
+                    <button
+                        class="h-10 sm:h-12 px-4 sm:px-6 rounded-xl font-bold text-xs sm:text-sm bg-white border border-[#E2E8F0] text-[#64748B] hover:text-[#1E293B] hover:border-[#CBD5E1] transition-all flex items-center justify-center gap-2 shadow-sm whitespace-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <span>{{ 'PREVIEW_CHAPTER' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Module Form -->
+            <div *ngIf="showAddForm" class="mb-6 sm:mb-10 animate-in slide-in-from-top-4">
+                <div
+                    class="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-[#E2E8F0]/80 overflow-hidden">
+                    <div
+                        class="px-4 sm:px-8 py-4 sm:py-6 border-b border-[#F1F5F9] bg-[#F8FAFC]/50 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EFF6FF] text-[#1877F2] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-black text-[#0F172A]">{{ 'ADD_NEW_MODULE' | translate
+                                }}</h3>
+                            <p class="text-xs sm:text-sm text-[#64748B] font-medium">{{ 'MODULE_DETAILS_MSG' | translate
+                                }}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 sm:p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-6">
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'MODULE_TITLE' | translate
+                                    }} <span class="text-red-500">*</span></label>
+                                <input type="text" [(ngModel)]="newModuleTitle"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    [placeholder]="'MODULE_TITLE' | translate">
+                                <input type="text" [(ngModel)]="newModuleTitleEn"
+                                    class="w-full mt-2 sm:mt-3 h-9 sm:h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                                    [placeholder]="'MODULE_TITLE_EN' | translate">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'VIDEO_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="newModuleVideoCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    placeholder="0">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'MCQ_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="newModuleMcqCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    placeholder="0">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ESSAY_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="newModuleEssayCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    placeholder="0">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'FLASHCARD_COUNT' |
+                                    translate }}</label>
+                                <input type="number" [(ngModel)]="newModuleFlashcardCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="px-4 sm:px-8 py-4 sm:py-5 bg-[#F8FAFC]/50 border-t border-[#F1F5F9] flex items-center justify-end gap-2 sm:gap-3">
+                        <button (click)="toggleAddForm()"
+                            class="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F1F5F9] hover:text-[#475569] transition-all">
+                            {{ 'CANCEL' | translate }}
+                        </button>
+                        <button (click)="saveModule()"
+                            class="px-6 sm:px-8 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">
+                            {{ 'SAVE' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Module Form -->
+            <div *ngIf="showEditForm && editingItem" class="mb-6 sm:mb-10 animate-in slide-in-from-top-4">
+                <div
+                    class="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-[#E2E8F0]/80 overflow-hidden">
+                    <div
+                        class="px-4 sm:px-8 py-4 sm:py-6 border-b border-[#F1F5F9] bg-[#F8FAFC]/50 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EFF6FF] text-[#1877F2] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-black text-[#0F172A]">{{ 'EDIT_MODULE' | translate }}
+                            </h3>
+                            <p class="text-xs sm:text-sm text-[#64748B] font-medium">{{ 'UPDATE_MODULE_MSG' | translate
+                                }}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 sm:p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-6">
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'MODULE_TITLE' | translate
+                                    }} <span class="text-red-500">*</span></label>
+                                <input type="text" [(ngModel)]="editModuleTitle"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm"
+                                    [placeholder]="'MODULE_TITLE' | translate">
+                                <input type="text" [(ngModel)]="editModuleTitleEn"
+                                    class="w-full mt-2 sm:mt-3 h-9 sm:h-10 px-3 rounded-md border border-[#E2E8F0] bg-white text-sm placeholder:text-[#94A3B8]/70 focus:border-[#1877F2] outline-none"
+                                    [placeholder]="'MODULE_TITLE_EN' | translate">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'VIDEO_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="editModuleVideoCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'MCQ_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="editModuleMcqCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'ESSAY_COUNT' | translate
+                                    }}</label>
+                                <input type="number" [(ngModel)]="editModuleEssayCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-[#475569] mb-2">{{ 'FLASHCARD_COUNT' |
+                                    translate }}</label>
+                                <input type="number" [(ngModel)]="editModuleFlashcardCount" min="0"
+                                    class="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-xl border-2 border-[#64748B] bg-[#F8FAFC] text-sm font-bold focus:border-[#1877F2] focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="px-4 sm:px-8 py-4 sm:py-5 bg-[#F8FAFC]/50 border-t border-[#F1F5F9] flex items-center justify-end gap-2 sm:gap-3">
+                        <button (click)="cancelEdit()"
+                            class="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm text-[#64748B] border border-[#E2E8F0] bg-white hover:bg-[#F1F5F9] hover:text-[#475569] transition-all">
+                            {{ 'CANCEL' | translate }}
+                        </button>
+                        <button (click)="updateModule()"
+                            class="px-6 sm:px-8 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-[#1877F2] to-[#1565D8] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all">
+                            {{ 'SAVE_CHANGES' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="modulesData.length === 0 && !showAddForm"
+                class="flex flex-col items-center justify-center py-16 sm:py-20 text-center">
+                <div
+                    class="w-20 h-20 sm:w-24 sm:h-24 bg-[#F1F5F9] rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 sm:w-12 sm:h-12 text-[#94A3B8]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-[#0F172A] mb-2">{{ 'NO_MODULES_YET' | translate }}</h3>
+                <p class="text-sm sm:text-base text-[#64748B] mb-6 sm:mb-8">{{ 'START_ADDING_MODULES_MSG' | translate }}
+                </p>
+                <button (click)="toggleAddForm()"
+                    class="h-10 sm:h-11 px-4 sm:px-6 rounded-xl font-bold text-xs sm:text-sm bg-[#1877F2] text-white hover:bg-[#1565D8] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>{{ 'ADD_NEW_MODULE' | translate }}</span>
+                </button>
+            </div>
+
+            <!-- Modules List -->
+            <div *ngIf="modulesData.length > 0" class="space-y-3 sm:space-y-4" cdkDropList cdkDropListLockAxis="y"
+                (cdkDropListDropped)="onDrop($event)">
+                <div *ngFor="let module of modulesData" cdkDrag cdkDragLockAxis="y"
+                    [cdkDragConstrainPosition]="dragConstraint" [cdkDragStartDelay]="220"
+                    (click)="navigateToModule(module)"
+                    class="bg-white rounded-xl border border-[#E2E8F0] overflow-hidden shadow-sm hover:shadow-lg hover:border-[#DBEAFE] hover:scale-[1.005] transition-all duration-200 relative group cursor-pointer">
+
+                    <div
+                        class="absolute right-0 top-0 bottom-0 w-0 bg-[#1877F2] transition-all duration-200 group-hover:w-[4px]">
+                    </div>
+
+                    <div class="p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                        <!-- Drag Handle + Icon -->
+                        <div class="flex items-center gap-2 sm:gap-4">
+                            <div class="text-[#CBD5E1] cursor-grab hover:text-[#94A3B8] p-1 hidden sm:block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 8h16M4 16h16" />
+                                </svg>
+                            </div>
+                            <button
+                                class="text-[#94A3B8] hover:text-[#1877F2] p-1 rounded-lg hover:bg-[#EFF6FF] transition-colors hidden sm:block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div
+                                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#EFF6FF] border border-[#DBEAFE] flex items-center justify-center text-[#1877F2] group-hover:bg-[#1877F2] transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 group-hover:text-white transition-colors duration-200"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <h3
+                                    class="font-bold text-[#0F172A] text-sm sm:text-lg mb-1 sm:mb-1.5 truncate group-hover:text-[#1877F2] transition-colors">
+                                    {{ getModuleTitle(module) }}
+                                </h3>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-[#1877F2] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -translate-x-2 group-hover:translate-x-0 hidden sm:block"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </div>
+
+                            <div
+                                class="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-bold text-[#64748B]">
+                                <ng-container *ngIf="!hasStats(module)">
+                                    <span class="text-[#94A3B8]">{{ 'NO_CONTENT_YET' | translate }}</span>
+                                </ng-container>
+                                <ng-container *ngIf="hasStats(module)">
+                                    <ng-container *ngIf="module.stats.video">
+                                        <div class="flex items-center gap-1 sm:gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#94A3B8]" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                            </svg>
+                                            <span>{{ module.stats.video }} {{ 'VIDEO_CLIPS' | translate }}</span>
+                                        </div>
+                                        <span class="w-[2px] h-[2px] sm:w-[3px] sm:h-[3px] rounded-full bg-[#E2E8F0]"
+                                            *ngIf="module.stats.mcq || module.stats.essay || module.stats.flashcard"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="module.stats.mcq">
+                                        <div class="flex items-center gap-1 sm:gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#94A3B8]" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span>{{ module.stats.mcq }} {{ 'MCQ_QUESTIONS' | translate }}</span>
+                                        </div>
+                                        <span class="w-[2px] h-[2px] sm:w-[3px] sm:h-[3px] rounded-full bg-[#E2E8F0]"
+                                            *ngIf="module.stats.essay || module.stats.flashcard"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="module.stats.essay">
+                                        <div class="flex items-center gap-1 sm:gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#94A3B8]" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            <span>{{ module.stats.essay }} {{ 'ESSAY_QUESTIONS' | translate }}</span>
+                                        </div>
+                                        <span class="w-[2px] h-[2px] sm:w-[3px] sm:h-[3px] rounded-full bg-[#E2E8F0]"
+                                            *ngIf="module.stats.flashcard"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="module.stats.flashcard">
+                                        <div class="flex items-center gap-1 sm:gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#94A3B8]" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                            </svg>
+                                            <span>{{ module.stats.flashcard }} {{ 'FLASHCARDS' | translate }}</span>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <!-- Status & Actions -->
+                        <div
+                            class="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-[#E2E8F0]">
+                            <div [ngClass]="module.status === 'published' ? 'bg-[#ECFDF5] text-[#10B981] border-[#D1FAE5]' : 'bg-[#F1F5F9] text-[#64748B] border-[#E2E8F0]'"
+                                class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold border">
+                                {{ (module.status === 'published' ? 'PUBLISHED' : 'DRAFT') | translate }}
+                            </div>
+
+                            <div class="flex items-center gap-1 border-r-0 sm:border-r border-[#E2E8F0] pr-0 sm:pr-4">
+                                <button (click)="openEditForm(module); $event.stopPropagation()"
+                                    class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#1877F2] hover:bg-[#EFF6FF] transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                </button>
+                                <button (click)="openDeleteModal(module.id); $event.stopPropagation()"
+                                    class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#EF4444] hover:bg-[#FEF2F2] transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Module Button -->
+                <button (click)="toggleAddForm()"
+                    class="w-full border-2 border-dashed border-[#E2E8F0] rounded-xl p-3 sm:p-4 flex items-center justify-center gap-2 text-[#64748B] hover:border-[#1877F2] hover:text-[#1877F2] hover:bg-[#EFF6FF]/50 transition-all group cursor-pointer">
+                    <div
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#F1F5F9] group-hover:bg-[#1877F2] text-[#94A3B8] group-hover:text-white flex items-center justify-center transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xs sm:text-sm">{{ 'ADD_NEW_MODULE_BTN' | translate }}</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Footer -->
+    <div
+        class="h-14 sm:h-16 bg-white border-t border-[#E2E8F0] px-4 sm:px-10 flex items-center justify-between shrink-0 sticky bottom-0 z-10">
+        <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm font-medium text-[#64748B]">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#1877F2]"></span>
+                <span>{{ 'TOTAL_MODULES' | translate }}: <span class="font-bold text-[#0F172A]">{{ modulesData.length
+                        }}</span></span>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#10B981]"></span>
+                <span>{{ 'PUBLISHED_COUNT' | translate }}: <span class="font-bold text-[#0F172A]">{{ publishedCount
+                        }}</span></span>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#94A3B8]"></span>
+                <span>{{ 'DRAFT_COUNT' | translate }}: <span class="font-bold text-[#0F172A]">{{ draftCount
+                        }}</span></span>
+            </div>
+        </div>
+
+        <button (click)="goBack()"
+            class="text-[#64748B] hover:text-[#1E293B] font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 group">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>{{ 'BACK_TO_STRUCTURE' | translate }}</span>
+        </button>
+    </div>
+
+    <!-- Delete Modal -->
+    <div *ngIf="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" (click)="cancelDelete()"></div>
+        <div
+            class="relative bg-white rounded-2xl shadow-xl border border-[#E2E8F0] w-full max-w-md p-4 sm:p-6 transform transition-all animate-in zoom-in-95">
+            <div class="flex flex-col items-center text-center">
+                <div
+                    class="w-14 h-14 sm:w-16 sm:h-16 bg-red-50 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 sm:w-8 sm:h-8 text-red-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-[#0F172A] mb-2">{{ 'DELETE_CONFIRM_TITLE' | translate }}
+                </h3>
+                <p class="text-sm sm:text-base text-[#64748B] mb-6 sm:mb-8">{{ 'DELETE_MODULE_MSG' | translate }}</p>
+                <div class="flex items-center gap-2 sm:gap-3 w-full">
+                    <button (click)="cancelDelete()"
+                        class="flex-1 h-10 sm:h-11 rounded-xl font-bold text-xs sm:text-sm bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] transition-colors">
+                        {{ 'CANCEL' | translate }}
+                    </button>
+                    <button (click)="confirmDelete()"
+                        class="flex-1 h-10 sm:h-11 rounded-xl font-bold text-xs sm:text-sm bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/20 transition-colors">
+                        {{ 'DELETE' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

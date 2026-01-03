@@ -19,29 +19,15 @@
   overflow-y: auto;
   padding: 24px;
   background-color: #f8fafc;
-  transition: margin 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 /* Ensure sidebar stays fixed height within the wrapper */
 app-sidebar {
   height: 100%;
   z-index: 40;
-}
-
-/* When sidebar is collapsed the main content should take more space */
-/* RTL: sidebar is on the right, so use margin-inline-start */
-:host-context([dir="rtl"]) .app-container.sidebar-collapsed .main-content {
-  margin-inline-start: 72px;
-}
-
-/* LTR: sidebar is on the left, so use margin-inline-start */
-:host-context([dir="ltr"]) .app-container.sidebar-collapsed .main-content {
-  margin-inline-start: 72px;
-}
-
-/* Fallback for collapsed sidebar */
-.app-container.sidebar-collapsed .main-content {
-  margin-inline-start: 72px;
+  flex-shrink: 0;
+  transition: width 0.25s ease;
 }
 
 /* Mobile Responsive */
@@ -56,10 +42,6 @@ app-sidebar {
     top: 0;
     height: 100vh;
     z-index: 999;
-  }
-
-  .app-container.sidebar-collapsed .main-content {
-    margin-inline-start: 0;
   }
 }
 

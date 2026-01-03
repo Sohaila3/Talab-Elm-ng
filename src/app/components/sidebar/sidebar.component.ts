@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy, OnInit, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SidebarStateService } from '../../services/sidebar-state.service';
 import { CommonModule } from '@angular/common';
@@ -31,6 +31,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ];
   collapsed = false;
   isOpen = false;
+  @HostBinding('class.mobile-open') mobileOpen = false;
   private _sub: Subscription | null = null;
 
   toggleSidebar() {
@@ -40,17 +41,29 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   closeSidebar() {
     this.sidebarState.close();
+    this.mobileOpen = false;
+    try { document.body.classList.remove('no-scroll'); } catch (e) { /* ignore */ }
   }
 
   @Output() collapsedChange = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    this._sub = this.sidebarState.open$.subscribe(v => this.isOpen = v);
+    this._sub = this.sidebarState.open$.subscribe(v => {
+      this.isOpen = v;
+      this.mobileOpen = v;
+      try {
+        if (v) document.body.classList.add('no-scroll');
+        else document.body.classList.remove('no-scroll');
+      } catch (e) {
+        // ignore in non-browser environments
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this._sub?.unsubscribe();
     this._sub = null;
+    try { document.body.classList.remove('no-scroll'); } catch (e) { }
   }
 
   constructor(private sidebarState: SidebarStateService) { }
