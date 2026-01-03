@@ -305,9 +305,8 @@ input {
   height: 100vh !important;
 }
 
-/* Unified style for "add" buttons across the app */
-button[class*="add-"],
-[class*="add-"] {
+/* Unified style for "add" buttons across the app (only target actual buttons) */
+button[class*="add-"] {
   background-color: #2563eb;
   color: #ffffff;
   padding: 10px 20px;
@@ -317,8 +316,7 @@ button[class*="add-"],
   transition: background-color 0.2s ease;
 }
 
-button[class*="add-"]:hover,
-[class*="add-"]:hover {
+button[class*="add-"]:hover {
   background-color: #1e40af;
 }
 
